@@ -1,7 +1,7 @@
 const LASER_SPEED = 80;
 var gIntervalLaser;
 var gLaser = { pos: null }
-var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
+var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
 
 // creates the hero and place it on board
 function createHero(board) {
@@ -21,6 +21,9 @@ function onKeyDown(ev) {
             moveHero({ i, j: (j + 1 >= gBoard[0].length) ? j : j + 1 });
             break;
         case 'z':
+            shoot()
+            break;
+        case 'x':
             shoot()
             break;
     }
@@ -57,7 +60,6 @@ function blinkLaser() {
         gBoard[i][j] = LASER
         renderBoard(gBoard)
         gLaser.pos.i--
-
     }
 }
 

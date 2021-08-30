@@ -19,15 +19,24 @@ var gHeroPos
 
 // Called when game loads
 function init() {
-    console.log('init');
     gBoard = createBoard(14, 14);
-    console.table(gBoard)
     gGame.isOn = true
     renderAliensCount()
     renderScore()
     moveAliens()
     renderBoard(gBoard)
 }
+
+function restartGame() {
+    clearInterval(gIntervalLaser)
+    gGame.aliensCount = ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT;
+    gGame.score = 0;
+    gAliensMoveRight = true
+    gIsFreeze = false;
+    gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
+    init()
+}
+
 // Create and returns the board with aliens on top, ground at bottom
 function createBoard(rows, cols) {
     var board = createMat(rows, cols);
@@ -36,6 +45,14 @@ function createBoard(rows, cols) {
     return board;
 }
 
+function gameOver() {
+    gGame.isOn = false
+    if (gGame.aliensCount === 0) {
+        console.log('win!');
+    } else {
+        console.log('lose!')
+    }
+}
 // Render the board as a <table> to the page
 function renderBoard(board) {
     var strHTML = '';

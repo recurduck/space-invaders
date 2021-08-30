@@ -68,7 +68,7 @@ function moveAliens() {
         if (gAliensBottomRowIdx === gHero.pos.i || (gAliensBottomRowIdx === 0 && gAliensTopRowIdx === 0)) {
             gIsFreeze = true
             clearInterval(gIntervalAliens)
-            console.log('GAME OVER');
+            gameOver()
         }
         if (!gIsFreeze) {
             if (gAliensMoveRight) {
@@ -85,9 +85,11 @@ function setAliansArea(board) {
     gAliensBottomRowIdx = 0
     gAliensMaxRightColumn = 0
     gAliensMaxLeftColumn = board[0].length
+    gGame.aliensCount = 0;
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
             if (board[i][j] === ALIEN) {
+                gGame.aliensCount++
                 if (!gAliensTopRowIdx) gAliensTopRowIdx = i
                 gAliensBottomRowIdx = i
                 if (j > gAliensMaxRightColumn) gAliensMaxRightColumn = j
