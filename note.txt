@@ -9,3 +9,5 @@ Step3 – Shoot Aliens. 30 min
 Step4 – Let the aliens move 16:43
 Note – when aliens are moving, debug becomes harder, implement a freeze feature early so you can stop them for debug
 17:26 still trying to figure it out how to do it
+it wasn't clear if I need to move all the alians togather or each row seperatly
+18:18 took a break

@@ -28,7 +28,8 @@ function init() {
 function createBoard(rows, cols) {
     var board = createMat(rows, cols);
     for (var j = 2; j < board[0].length - 2; j++) {
-        board[0][j] = ALIEN
+        board[1][j] = ALIEN
+        board[2][j] = ALIEN
     }
     createHero(board)
     return board;
