@@ -3,7 +3,6 @@ var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
 
 // creates the hero and place it on board
 function createHero(board) {
-    console.log('hero');
     board[gHero.pos.i][gHero.pos.j] = HERO
 }
 // Handle game keys
@@ -40,6 +39,7 @@ function blinkLaser(pos) {
             case ALIEN:
                 gBoard[pos.i - 1][pos.j] = ''
                 gHero.isShoot = false
+                handleAlienHit({ i: pos.i - 1, j: pos.j })
                 break;
             default:
                 gBoard[pos.i - 1][pos.j] = LASER
