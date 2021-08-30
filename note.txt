@@ -5,7 +5,7 @@ Step1 – Setup the board
 5 min
 3. render board 12 min
 Step2 – Move the hero. 8 min
-Step3 – Shoot Aliens. 30 min
+Step3 – Shoot Aliens. 30 min (there is a pitfall with the setinterval and position)
 Step4 – Let the aliens move 16:43
 Note – when aliens are moving, debug becomes harder, implement a freeze feature early so you can stop them for debug
 17:26 still trying to figure it out how to do it

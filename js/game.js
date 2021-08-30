@@ -12,7 +12,8 @@ const LASER = '⤊';
 var gBoard;
 var gGame = {
     isOn: false,
-    aliensCount: 0
+    aliensCount: ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT,
+    score: 0
 }
 var gHeroPos
 
@@ -21,16 +22,16 @@ function init() {
     console.log('init');
     gBoard = createBoard(14, 14);
     console.table(gBoard)
+    gGame.isOn = true
+    renderAliensCount()
+    renderScore()
     moveAliens()
     renderBoard(gBoard)
 }
 // Create and returns the board with aliens on top, ground at bottom
 function createBoard(rows, cols) {
     var board = createMat(rows, cols);
-    for (var j = 2; j < board[0].length - 2; j++) {
-        board[1][j] = ALIEN
-        board[2][j] = ALIEN
-    }
+    createAliens(board)
     createHero(board)
     return board;
 }
@@ -68,6 +69,13 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML;
 }
 
+function renderScore() {
+    document.querySelector('.score').innerText = gGame.score
+}
+
+function renderAliensCount() {
+    document.querySelector('.aliens-count').innerText = gGame.aliensCount
+}
 // Returns the class name for a specific cell
 function getClassName(location) {
     var cellClass = 'cell-' + location.i + '-' + location.j;

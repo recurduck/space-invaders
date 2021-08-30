@@ -7,13 +7,25 @@ var gAliensMaxLeftColumn;
 var gAliensMoveRight = true
 var gIsFreeze = false;
 
+function createAliens(board) {
+    for (var i = 1; i < ALIENS_ROW_COUNT + 1; i++) {
+        for (var j = (BOARD_SIZE - ALIENS_ROW_LENGTH) / 2; j < board[0].length - (BOARD_SIZE - ALIENS_ROW_LENGTH) / 2; j++) {
+            board[i][j] = ALIEN
+        }
+    }
+}
+
 function handleAlienHit(pos) {
-    console.log('alien hited!')
+    gBoard[pos.i][pos.j] = '';
+    gGame.score += 10;
+    gGame.aliensCount--;
+    renderScore();
+    renderAliensCount();
+    renderBoard(gBoard)
 }
 
 function shiftBoardRight(board, fromI, toI) {
     if (gAliensMaxRightColumn >= gBoard[0].length - 1) {
-        console.log('shift down from right');
         shiftBoardDown(board, fromI, toI)
     } else {
         for (var i = toI; i >= fromI; i--) {
@@ -26,7 +38,6 @@ function shiftBoardRight(board, fromI, toI) {
 
 function shiftBoardLeft(board, fromI, toI) {
     if (gAliensMaxLeftColumn <= 0) {
-        console.log('shift down from left');
         shiftBoardDown(board, fromI, toI)
 
     } else {
@@ -38,11 +49,9 @@ function shiftBoardLeft(board, fromI, toI) {
     }
 }
 function shiftBoardDown(board, fromI, toI) {
-    console.log(fromI, toI, i >= fromI);
-    for (var i = toI; i >= fromI-1; i--) {
+    for (var i = toI; i >= fromI - 1; i--) {
         if (gAliensBottomRowIdx >= board.length - 1) console.log('game over')
         else {
-            console.log(board[i] , board[i + 1]);
             board[i + 1] = board[i]
             renderBoard(board)
         }
@@ -55,17 +64,18 @@ function shiftBoardDown(board, fromI, toI) {
 function moveAliens() {
     if (!gIntervalAliens) gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED)
     else {
+        setAliansArea(gBoard)
+        if (gAliensBottomRowIdx === gHero.pos.i || (gAliensBottomRowIdx === 0 && gAliensTopRowIdx === 0)) {
+            gIsFreeze = true
+            clearInterval(gIntervalAliens)
+            console.log('GAME OVER');
+        }
         if (!gIsFreeze) {
-            setAliansArea(gBoard)
-            console.log('gAliensTopRowIdx', gAliensTopRowIdx, 'gAliensBottomRowIdx', gAliensBottomRowIdx,
-            'gAliensMaxRightColumn', gAliensMaxRightColumn, 'gAliensMaxLeftColumn', gAliensMaxLeftColumn);
             if (gAliensMoveRight) {
                 shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
             } else {
                 shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
             }
-
-            // console.log(gBoard[i])
         }
     }
 }
@@ -86,3 +96,4 @@ function setAliansArea(board) {
         }
     }
 }
+
