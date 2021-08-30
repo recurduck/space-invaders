@@ -1,7 +1,7 @@
 const LASER_SPEED = 80;
 var gIntervalLaser;
 var gLaser = { pos: null }
-var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
+var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: true };
 
 // creates the hero and place it on board
 function createHero(board) {
@@ -65,7 +65,7 @@ function blinkLaser() {
 
 // Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
-    if (!gHero.isShoot) {
+    if (!gHero.isShoot || gHero.isSuperMode) {
         gHero.isShoot = true
         console.log('shot laser');
         gLaser.pos = { i: gHero.pos.i - 1, j: gHero.pos.j };

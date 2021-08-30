@@ -28,7 +28,11 @@ function init() {
 }
 
 function restartGame() {
+    document.querySelector('.btn-restart').style.display = 'none'
+    document.querySelector('.btn-restart').innerText = 'Restart'
+    clearInterval(gIntervalAliens)
     clearInterval(gIntervalLaser)
+    gIntervalAliens = null
     gGame.aliensCount = ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT;
     gGame.score = 0;
     gAliensMoveRight = true
@@ -52,6 +56,7 @@ function gameOver() {
     } else {
         console.log('lose!')
     }
+    toggleRestartBtn()
 }
 // Render the board as a <table> to the page
 function renderBoard(board) {
@@ -86,12 +91,32 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML;
 }
 
+// Render the board as a <table> to the page
+function renderInitBoard() {
+    var strHTML = '';
+    for (var i = 0; i < BOARD_SIZE; i++) {
+        strHTML += '<tr>\n';
+        for (var j = 0; j < BOARD_SIZE; j++) {
+            strHTML += `\t<td class="cell">\n  </td>`;;
+        }
+        strHTML += '</tr>\n';
+    }
+    var elBoard = document.querySelector('.board');
+    elBoard.innerHTML = strHTML;
+}
+
+
 function renderScore() {
     document.querySelector('.score').innerText = gGame.score
 }
 
 function renderAliensCount() {
     document.querySelector('.aliens-count').innerText = gGame.aliensCount
+}
+
+function toggleRestartBtn() {
+    var btn = document.querySelector('.btn-restart').style
+    btn.display = (btn.display === 'none') ? 'block' : 'none';
 }
 // Returns the class name for a specific cell
 function getClassName(location) {

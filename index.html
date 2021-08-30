@@ -9,7 +9,7 @@
     <title>Space Invaders</title>
 </head>
 
-<body onkeydown="onKeyDown(event)" onload="init()">
+<body onkeydown="onKeyDown(event)" onload="renderInitBoard()">
     <h1>Play Space Invaders</h1>
     
     <table>
@@ -22,7 +22,7 @@
         </thead>
         <tbody class="board"></tbody>
     </table>
-    <button onclick="restartGame()" class="btn btn-restart">Restart</button>
+    <button onclick="restartGame()" class="btn btn-restart">Start</button>
     <script src="js/utils.js"></script>
     <script src="js/alien.js"></script>
     <script src="js/hero.js"></script>
