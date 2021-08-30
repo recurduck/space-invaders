@@ -1,0 +1,4 @@
+Step1 – Setup the board 
+1.	Create a 14x14 matrix containing strings (later on you can switch to a more advanced model of cells as described in code above). Place 1 line of aliens on top, no need for them to move just yet
+15 min 
+15:32
