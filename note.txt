@@ -23,4 +23,7 @@ it wasn't clear if I need to move all the alians togather or each row seperatly 
 22:37 finished to fix shooting - aliens rows move - game over situations
 total: 1:45h
 
-restart feature - 10min
+restart/start feature - 10min
+
+Super mode - Hitting the “X” Key will give you no limit on laser shots you fire for 3 seconds. You have 3 Super Attacks.
+10 min but had issues with create new lasers will take care later

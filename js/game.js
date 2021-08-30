@@ -13,7 +13,8 @@ var gBoard;
 var gGame = {
     isOn: false,
     aliensCount: ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT,
-    score: 0
+    score: 0,
+    super: 3
 }
 var gHeroPos
 
@@ -23,6 +24,7 @@ function init() {
     gGame.isOn = true
     renderAliensCount()
     renderScore()
+    renderSuper()
     moveAliens()
     renderBoard(gBoard)
 }
@@ -35,6 +37,7 @@ function restartGame() {
     gIntervalAliens = null
     gGame.aliensCount = ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT;
     gGame.score = 0;
+    gGame.super = 3;
     gAliensMoveRight = true
     gIsFreeze = false;
     gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
@@ -114,6 +117,9 @@ function renderAliensCount() {
     document.querySelector('.aliens-count').innerText = gGame.aliensCount
 }
 
+function renderSuper() {
+    document.querySelector('.super').innerText = gGame.super
+}
 function toggleRestartBtn() {
     var btn = document.querySelector('.btn-restart').style
     btn.display = (btn.display === 'none') ? 'block' : 'none';

@@ -16,3 +16,7 @@ td {
     height: 40px;
     text-align: center;
 }
+th { 
+    text-align: left;
+    padding-left: 15px;
+}

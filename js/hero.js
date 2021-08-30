@@ -1,7 +1,7 @@
 const LASER_SPEED = 80;
 var gIntervalLaser;
-var gLaser = { pos: null }
-var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: true };
+var gLasers = []
+var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
 
 // creates the hero and place it on board
 function createHero(board) {
@@ -24,7 +24,7 @@ function onKeyDown(ev) {
             shoot()
             break;
         case 'x':
-            shoot()
+            superHero()
             break;
     }
 
@@ -40,8 +40,8 @@ function moveHero(dir) {
 
 // renders a LASER at specific cell for short time and removes it
 function blinkLaser() {
-    var i = gLaser.pos.i;
-    var j = gLaser.pos.j;
+    var i = gLasers.pos.i;
+    var j = gLasers.pos.j;
     if (i < 0) {
         gHero.isShoot = false
         clearInterval(gIntervalLaser)
@@ -59,7 +59,7 @@ function blinkLaser() {
         }
         gBoard[i][j] = LASER
         renderBoard(gBoard)
-        gLaser.pos.i--
+        gLasers.pos.i--
     }
 }
 
@@ -68,9 +68,20 @@ function shoot() {
     if (!gHero.isShoot || gHero.isSuperMode) {
         gHero.isShoot = true
         console.log('shot laser');
-        gLaser.pos = { i: gHero.pos.i - 1, j: gHero.pos.j };
+        gLasers.pos = { i: gHero.pos.i - 1, j: gHero.pos.j };
         blinkLaser({ i: gHero.pos.i - 1, j: gHero.pos.j });
         gIntervalLaser = setInterval(blinkLaser, LASER_SPEED)
     }
     renderBoard(gBoard)
+}
+
+function superHero() {
+    if(!gHero.isSuperMode) {
+        gHero.isSuperMode = true
+        setTimeout(()=>{
+            gHero.isSuperMode = false
+        }, 3000)
+        gGame.super--
+        renderSuper()
+    }
 }
