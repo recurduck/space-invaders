@@ -27,3 +27,6 @@ restart/start feature - 10min
 
 Super mode - Hitting the “X” Key will give you no limit on laser shots you fire for 3 seconds. You have 3 Super Attacks.
 10 min but had issues with create new lasers will take care later
+
+Blow up neighbors - when player press 'n' – if the laser has neighbors that are aliens – they are all cleared
+8 min with small bug with the laser interval

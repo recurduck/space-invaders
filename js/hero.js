@@ -1,6 +1,6 @@
 const LASER_SPEED = 80;
 var gIntervalLaser;
-var gLasers = []
+var gLasers = {}
 var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
 
 // creates the hero and place it on board
@@ -25,6 +25,12 @@ function onKeyDown(ev) {
             break;
         case 'x':
             superHero()
+            break;
+        case 'n':
+            blowUp()
+            break;
+        case 'Enter':
+            if(!gGame.isOn) restartGame()
             break;
     }
 
@@ -84,4 +90,21 @@ function superHero() {
         gGame.super--
         renderSuper()
     }
+}
+
+function blowUp() {
+    console.log('blow!!!');
+    for (var i = gLasers.pos.i - 1; i <= gLasers.pos.i + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue;
+        for (var j = gLasers.pos.j - 1; j <= gLasers.pos.j + 1; j++) {
+            if (i === gLasers.pos.i && j === gLasers.pos.j)
+                continue;
+            if (j < 0 || j >= gBoard[i].length)
+                continue;
+            if (gBoard[i][j] === ALIEN) {
+                gBoard[i][j] = ''
+            }
+        }
+    }
+    clearInterval(gIntervalLaser)
 }
