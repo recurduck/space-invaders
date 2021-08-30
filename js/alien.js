@@ -30,7 +30,7 @@ function shiftBoardLeft(board, fromI, toI) {
         shiftBoardDown(board, fromI, toI)
 
     } else {
-        for (var i = toI; i > fromI; i--) {
+        for (var i = toI; i >= fromI; i--) {
             board[i].push('')
             board[i].shift()
             renderBoard(board)
@@ -39,7 +39,7 @@ function shiftBoardLeft(board, fromI, toI) {
 }
 function shiftBoardDown(board, fromI, toI) {
     console.log(fromI, toI, i >= fromI);
-    for (var i = toI; i > fromI; i--) {
+    for (var i = toI; i >= fromI-1; i--) {
         if (gAliensBottomRowIdx >= board.length - 1) console.log('game over')
         else {
             console.log(board[i] , board[i + 1]);
@@ -57,6 +57,8 @@ function moveAliens() {
     else {
         if (!gIsFreeze) {
             setAliansArea(gBoard)
+            console.log('gAliensTopRowIdx', gAliensTopRowIdx, 'gAliensBottomRowIdx', gAliensBottomRowIdx,
+            'gAliensMaxRightColumn', gAliensMaxRightColumn, 'gAliensMaxLeftColumn', gAliensMaxLeftColumn);
             if (gAliensMoveRight) {
                 shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
             } else {
