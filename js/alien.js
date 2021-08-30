@@ -11,4 +11,9 @@ function shiftBoardDown(board, fromI, toI) {}
 // runs the interval for moving aliens side to side and down
 // it re-renders the board every time
 // when the aliens are reching the hero row - interval stops
-function moveAliens() {}
+function moveAliens() {
+    if(!gIntervalAliens) gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED)
+    else {
+        console.log('move');
+    }
+}

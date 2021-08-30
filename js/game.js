@@ -21,12 +21,13 @@ function init() {
     console.log('init');
     gBoard = createBoard(14, 14);
     console.table(gBoard)
+    moveAliens()
     renderBoard(gBoard)
 }
 // Create and returns the board with aliens on top, ground at bottom
 function createBoard(rows, cols) {
     var board = createMat(rows, cols);
-    for (var j = 2; j < board[0].length-2; j++) {
+    for (var j = 2; j < board[0].length - 2; j++) {
         board[0][j] = ALIEN
     }
     createHero(board)
@@ -36,35 +37,38 @@ function createBoard(rows, cols) {
 // Render the board as a <table> to the page
 function renderBoard(board) {
     var strHTML = '';
-	for (var i = 0; i < board.length; i++) {
-		strHTML += '<tr>\n';
-		for (var j = 0; j < board[0].length; j++) {
-			var currCell = board[i][j];
+    for (var i = 0; i < board.length; i++) {
+        strHTML += '<tr>\n';
+        for (var j = 0; j < board[0].length; j++) {
+            var currCell = board[i][j];
 
-			var cellClass = getClassName({ i: i, j: j })
-			// if (currCell.type === FLOOR) cellClass += ' floor';
-			// else if (currCell.type === WALL) cellClass += ' wall';
-			strHTML += `\t<td class="cell ${cellClass}">\n`;
-			switch(currCell) {
-                case HERO: 
-                    strHTML += HERO; 
+            var cellClass = getClassName({ i: i, j: j })
+            // if (currCell.type === FLOOR) cellClass += ' floor';
+            // else if (currCell.type === WALL) cellClass += ' wall';
+            strHTML += `\t<td class="cell ${cellClass}">\n`;
+            switch (currCell) {
+                case HERO:
+                    strHTML += HERO;
                     break;
-                case ALIEN: 
+                case ALIEN:
                     strHTML += ALIEN;
+                    break;
+                case LASER:
+                    strHTML += LASER;
                     break;
                 default:
                     strHTML += ' ';
             }
-			strHTML += '\t</td>\n';
-		}
-		strHTML += '</tr>\n';
-	}
-	var elBoard = document.querySelector('.board');
-	elBoard.innerHTML = strHTML;
+            strHTML += '\t</td>\n';
+        }
+        strHTML += '</tr>\n';
+    }
+    var elBoard = document.querySelector('.board');
+    elBoard.innerHTML = strHTML;
 }
 
 // Returns the class name for a specific cell
 function getClassName(location) {
-	var cellClass = 'cell-' + location.i + '-' + location.j;
-	return cellClass;
+    var cellClass = 'cell-' + location.i + '-' + location.j;
+    return cellClass;
 }
