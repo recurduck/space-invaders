@@ -5,7 +5,8 @@ function createMat(ROWS, COLS) {
     for (var i = 0; i < ROWS; i++) {
         var row = []
         for (var j = 0; j < COLS; j++) {
-            row.push('')
+            if(j===0 || j === COLS-1) row.push({type: EDGE, gameObject: NONE});
+            else row.push({type: SKY, gameObject: NONE});
         }
         mat.push(row)
     }

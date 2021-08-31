@@ -4,6 +4,9 @@ const BOARD_SIZE = 14;
 const ALIENS_ROW_LENGTH = 8
 const ALIENS_ROW_COUNT = 3
 
+const SKY = 'SKY'
+const EDGE = '⬛️'
+const NONE = ' '
 const HERO = '♆';
 const ALIEN = '👽';
 const LASER = '⤊';
@@ -70,10 +73,9 @@ function renderBoard(board) {
             var currCell = board[i][j];
 
             var cellClass = getClassName({ i: i, j: j })
-            // if (currCell.type === FLOOR) cellClass += ' floor';
-            // else if (currCell.type === WALL) cellClass += ' wall';
+            cellClass += (currCell.type === SKY) ? ' sky' : ' edge';
             strHTML += `\t<td class="cell ${cellClass}">\n`;
-            switch (currCell) {
+            switch (currCell.gameObject) {
                 case HERO:
                     strHTML += HERO;
                     break;
@@ -106,6 +108,7 @@ function renderInitBoard() {
     }
     var elBoard = document.querySelector('.board');
     elBoard.innerHTML = strHTML;
+    renderInstructions();
 }
 
 
@@ -119,6 +122,16 @@ function renderAliensCount() {
 
 function renderSuper() {
     document.querySelector('.super').innerText = gGame.super
+}
+
+function renderInstructions() {
+    var elInstruction = document.querySelector('.instructions')
+    elInstruction.innerText = `Press 'Enter' to Start/Restart Game.
+        Press 'Left & Right' Keys to move your hero.
+        Press 'Space' to Fire Laser.
+        Press 'n' to blow Aliens around Laser.
+        Press 'z' to ...
+        Press 'x' to achive Super Mode for shooting more than one Laser each time.`
 }
 function toggleRestartBtn() {
     var btn = document.querySelector('.btn-restart').style

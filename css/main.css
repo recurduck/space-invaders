@@ -20,3 +20,9 @@ th {
     text-align: left;
     padding-left: 15px;
 }
+.sky {
+    background-color: black;
+}
+.edge {
+    background-color: rgb(255, 0, 0);
+}

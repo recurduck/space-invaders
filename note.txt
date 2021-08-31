@@ -30,3 +30,7 @@ Super mode - Hitting the “X” Key will give you no limit on laser shots you f
 
 Blow up neighbors - when player press 'n' – if the laser has neighbors that are aliens – they are all cleared
 8 min with small bug with the laser interval
+
+had a big bug when i set gBoard[i][j] above the aliens it create for all over the column the string
+after some thinking I understood that I copied pointers in the arrays so all the rows above aliens are equal pointers
+            board[i + 1] = board[i] => just needed to add .slice()

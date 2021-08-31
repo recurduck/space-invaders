@@ -11,23 +11,28 @@
 
 <body onkeydown="onKeyDown(event)" onload="renderInitBoard()">
     <h1>Play Space Invaders</h1>
-    
-    <table>
-        <thead>
-            <tr>
-                <th colspan="4">Score: <span class="score"></span></th>
-                <th colspan="6">Hi-Score: <span class="hi-score"></span></th>
-                <th colspan="4">Aliens: <span class="aliens-count"></span></th>
-            </tr>
-            <tr>
-                <th colspan="4">Super: <span class="super"></span></th>
-                <th colspan="6">Shilds: <span class="shild"></span></th>
-                <th colspan="4">Lives: <span class="live"></span></th>
-            </tr>
-        </thead>
-        <tbody class="board"></tbody>
-    </table>
-    <button onclick="restartGame()" class="btn btn-restart">Start</button>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="4">Score: <span class="score"></span></th>
+                    <th colspan="6">Hi-Score: <span class="hi-score"></span></th>
+                    <th colspan="4">Aliens: <span class="aliens-count"></span></th>
+                </tr>
+                <tr>
+                    <th colspan="4">Super: <span class="super"></span></th>
+                    <th colspan="6">Shilds: <span class="shild"></span></th>
+                    <th colspan="4">Lives: <span class="live"></span></th>
+                </tr>
+            </thead>
+            <tbody class="board"></tbody>
+        </table>
+        <section>
+            <p class="instructions">
+            </p>
+            <button onclick="restartGame()" class="btn btn-restart">Start</button>
+        </section>
+    </main>
     <script src="js/utils.js"></script>
     <script src="js/alien.js"></script>
     <script src="js/hero.js"></script>
