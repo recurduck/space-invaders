@@ -33,4 +33,9 @@ Blow up neighbors - when player press 'n' – if the laser has neighbors that ar
 
 had a big bug when i set gBoard[i][j] above the aliens it create for all over the column the string
 after some thinking I understood that I copied pointers in the arrays so all the rows above aliens are equal pointers
-            board[i + 1] = board[i] => just needed to add .slice()
+            board[i + 1] = board[i] => just needed to add .slice() 
+            after some runs there is still some bugs so I understood we should do a deep copy for the lines!
+
+Shields:
+Hitting the “Z” Key will guard you from the next laser for 5 seconds. You have 3 shields.
+10 min (waiting for the rock feature)

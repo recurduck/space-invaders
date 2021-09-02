@@ -29,8 +29,11 @@ function shiftBoardRight(board, fromI, toI) {
         shiftBoardDown(board, fromI, toI)
     } else {
         for (var i = toI; i >= fromI; i--) {
-            board[i].splice(1,0,{type: SKY, gameObject: NONE})
-            board[i].splice(BOARD_SIZE-1,1)
+            board[i].splice(1, 0, { type: SKY, gameObject: NONE })
+            board[i].splice(BOARD_SIZE - 1, 1)
+            for (var j = gAliensMaxLeftColumn; j < gAliensMaxRightColumn; j++) {
+                if (board[i][j].gameObject === LASER) board[i][j].gameObject = NONE
+            }
             renderBoard(board)
         }
     }
@@ -42,8 +45,11 @@ function shiftBoardLeft(board, fromI, toI) {
 
     } else {
         for (var i = toI; i >= fromI; i--) {
-            board[i].splice(BOARD_SIZE-1,0,{type: SKY, gameObject: NONE})
-            board[i].splice(1,1)
+            board[i].splice(BOARD_SIZE - 1, 0, { type: SKY, gameObject: NONE })
+            board[i].splice(1, 1)
+            for (var j = gAliensMaxLeftColumn; j < gAliensMaxRightColumn; j++) {
+                if (board[i][j].gameObject === LASER) board[i][j].gameObject = NONE
+            }
             renderBoard(board)
         }
     }
@@ -52,12 +58,19 @@ function shiftBoardDown(board, fromI, toI, forced = false) {
     for (var i = toI; i >= fromI - 1; i--) {
         if (gAliensBottomRowIdx >= board.length - 1) console.log('game over')
         else {
-            board[i + 1] = board[i].slice()
+            board[i + 1] = JSON.parse(JSON.stringify(board[i]))
+            for (var j = gAliensMaxLeftColumn; j < gAliensMaxRightColumn; j++) {
+                // console.log(board[i + 1][j].gameObject === LASER, board[i + 1][j].gameObject, j);
+                if (board[i + 1][j].gameObject === LASER) board[i + 1][j].gameObject = NONE
+                // console.log(board[i + 1][j].gameObject === LASER, board[i + 1][j].gameObject, j);
+                // console.log('___________________________________________');
+            }
             renderBoard(board)
         }
     }
-    if(!forced) gAliensMoveRight = !gAliensMoveRight
+    if (!forced) gAliensMoveRight = !gAliensMoveRight
 }
+
 // runs the interval for moving aliens side to side and down
 // it re-renders the board every time
 // when the aliens are reching the hero row - interval stops
@@ -92,8 +105,8 @@ function setAliansArea(board) {
                 gGame.aliensCount++
                 if (!gAliensTopRowIdx) gAliensTopRowIdx = i
                 gAliensBottomRowIdx = i
-                if (j > gAliensMaxRightColumn) gAliensMaxRightColumn = j
-                if (j < gAliensMaxLeftColumn) gAliensMaxLeftColumn = j
+                if (j >= gAliensMaxRightColumn) gAliensMaxRightColumn = j
+                if (j <= gAliensMaxLeftColumn) gAliensMaxLeftColumn = j
             }
         }
     }

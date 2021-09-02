@@ -1,7 +1,7 @@
-const LASER_SPEED = 1000;
+const LASER_SPEED = 80;
 var gIntervalLaser;
 var gLasers = []
-var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
+var gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false, isShield: false };
 
 // creates the hero and place it on board
 function createHero(board) {
@@ -11,17 +11,18 @@ function createHero(board) {
 // Handle game keys
 function onKeyDown(ev) {
     // console.log(ev);
-    var i = gHero.pos.i;
-    var j = gHero.pos.j;
     switch (ev.key) {
         case 'ArrowLeft':
-            moveHero({ i, j: (j - 1 < 0) ? j : j - 1 });
+            moveHero(-1);
             break;
         case 'ArrowRight':
-            moveHero({ i, j: (j + 1 >= gBoard[0].length) ? j : j + 1 });
+            moveHero(1);
             break;
         case ' ': //Space
             shoot()
+            break;
+        case 'z':
+            shieldHero()
             break;
         case 'x':
             superHero()
@@ -30,7 +31,7 @@ function onKeyDown(ev) {
             blowUp()
             break;
         case 'Enter':
-            if (!gGame.isOn) restartGame()
+            restartGame()
             break;
     }
 
@@ -38,12 +39,15 @@ function onKeyDown(ev) {
 
 // Move the hero right (1) or left (-1)
 function moveHero(dir) {
-    if (dir.j === 0 || dir.j === BOARD_SIZE - 1) {
+    var i = gHero.pos.i;
+    var j = gHero.pos.j + dir
+    if (!gGame.isOn) return
+    if (j === 0 || j === BOARD_SIZE - 1) {
         setAliansArea(gBoard)
         shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx, true)
     } else {
         gBoard[gHero.pos.i][gHero.pos.j].gameObject = NONE
-        gHero.pos = dir
+        gHero.pos = { i, j: gHero.pos.j + dir }
         gBoard[gHero.pos.i][gHero.pos.j].gameObject = HERO
         renderBoard(gBoard)
     }
@@ -56,19 +60,20 @@ function blinkLaser(pos, laserIdx) {
     if (i < 0) {
         gHero.isShoot = false
         gLasers.splice(laserIdx, 1)
-        clearInterval(gIntervalLaser)
+        if (gLasers.length === 0) clearInterval(gIntervalLaser)
     }
     else {
-        setTimeout(() => {
-            gBoard[i][j].gameObject = NONE;
-            renderBoard(gBoard)
-        }, LASER_SPEED)
         if (gBoard[i][j].gameObject === ALIEN) {
             handleAlienHit({ i, j })
             gHero.isShoot = false
             gLasers.splice(laserIdx, 1)
-            clearInterval(gIntervalLaser);
+            if (gLasers.length === 0) clearInterval(gIntervalLaser)
             return;
+        } else {
+            setTimeout(() => {
+                if (gBoard[i][j].gameObject !== ALIEN) gBoard[i][j].gameObject = NONE;
+                renderBoard(gBoard)
+            }, LASER_SPEED)
         }
         gBoard[i][j].gameObject = LASER
         renderBoard(gBoard)
@@ -77,7 +82,7 @@ function blinkLaser(pos, laserIdx) {
 }
 
 function blinkLasers() {
-    console.log('blink');
+    // console.log('blink');
     for (var i = 0; i < gLasers.length; i++) {
         gLasers[i].i--
         blinkLaser(gLasers[i], i)
@@ -86,18 +91,21 @@ function blinkLasers() {
 
 // Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
+    if (!gGame.isOn) return
     if (!gHero.isShoot || gHero.isSuperMode) {
         gHero.isShoot = true
-        console.log('shot laser');
-        // gLasers[0].pos = { i: gHero.pos.i - 1, j: gHero.pos.j };
+        // console.log('shot laser');
+        if (!gIntervalLaser || gLasers.length === 0) {
+            gIntervalLaser = setInterval(blinkLasers, LASER_SPEED)
+        }
         gLasers.push({ i: gHero.pos.i - 1, j: gHero.pos.j })
         blinkLaser(gLasers[gLasers.length - 1]);
-        gIntervalLaser = setInterval(blinkLasers, LASER_SPEED)
     }
     renderBoard(gBoard)
 }
 
 function superHero() {
+    if (!gGame.isOn) return
     if (!gHero.isSuperMode) {
         gHero.isSuperMode = true
         setTimeout(() => {
@@ -108,20 +116,36 @@ function superHero() {
     }
 }
 
+function shieldHero() {
+    if (!gGame.isOn) return
+    if (!gHero.isShield) {
+        gHero.isShield = true
+        setTimeout(() => {
+            gHero.isShield = false
+        }, 5000)
+        gGame.shields--
+        renderShields()
+    }
+}
+
 function blowUp() {
+    if (!gGame.isOn) return
     if (!gHero.isShoot) return;
     console.log('blow!!!');
     gHero.isShoot = false
-    for (var i = gLasers[0].pos.i - 1; i <= gLasers[0].pos.i + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue;
-        for (var j = gLasers[0].pos.j - 1; j <= gLasers[0].pos.j + 1; j++) {
-            if (j < 0 || j >= gBoard[i].length)
-                continue;
-            if (gBoard[i][j].gameObject !== NONE) {
-                gBoard[i][j].gameObject = NONE
+    for (var laser = 0; laser < gLasers.length; laser++) {
+        for (var i = gLasers[laser].i - 1; i <= gLasers[laser].i + 1; i++) {
+            if (i < 0 || i >= gBoard.length) continue;
+            for (var j = gLasers[laser].j - 1; j <= gLasers[laser].j + 1; j++) {
+                if (j < 0 || j >= gBoard[i].length)
+                    continue;
+                if (gBoard[i][j].gameObject !== NONE) {
+                    gBoard[i][j].gameObject = NONE
+                }
             }
         }
     }
+    gLasers = []
     clearInterval(gIntervalLaser)
     console.log(gIntervalLaser);
 }

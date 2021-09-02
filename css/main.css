@@ -26,3 +26,6 @@ th {
 .edge {
     background-color: rgb(255, 0, 0);
 }
+.shield {
+    opacity: .3;
+}

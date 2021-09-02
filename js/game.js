@@ -6,9 +6,15 @@ const ALIENS_ROW_COUNT = 3
 
 const SKY = 'SKY'
 const EDGE = '⬛️'
+const LIVE = '❤️';
+const SHIELD = '🛡️';
+const CANDY = '🌟';
 const NONE = ' '
-const HERO = '♆';
+const HERO = '🔱';
+const HERO_SUPER = '🗼';
 const ALIEN = '👽';
+const ALIEN_2 = '👾';
+const ALIEN_3 = '🐽';
 const LASER = '⤊';
 
 // Matrix of cell objects. e.g.: {type: SKY, gameObject: ALIEN}
@@ -17,7 +23,9 @@ var gGame = {
     isOn: false,
     aliensCount: ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT,
     score: 0,
-    super: 3
+    super: 3,
+    lives: 3,
+    shields: 3
 }
 var gHeroPos
 
@@ -28,12 +36,13 @@ function init() {
     renderAliensCount()
     renderScore()
     renderSuper()
+    renderLives()
+    renderShields()
     moveAliens()
     renderBoard(gBoard)
 }
 
 function restartGame() {
-    document.querySelector('.btn-restart').style.display = 'none'
     document.querySelector('.btn-restart').innerText = 'Restart'
     clearInterval(gIntervalAliens)
     clearInterval(gIntervalLaser)
@@ -41,9 +50,13 @@ function restartGame() {
     gGame.aliensCount = ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT;
     gGame.score = 0;
     gGame.super = 3;
+    gGame.lives = 3;
+    gGame.shields = 3;
+    gHero.isShoot = false
     gAliensMoveRight = true
     gIsFreeze = false;
-    gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false };
+    gLasers = []
+    gHero = { pos: { i: 12, j: 6 }, isShoot: false, isSuperMode: false, isShield: false };
     init()
 }
 
@@ -62,7 +75,6 @@ function gameOver() {
     } else {
         console.log('lose!')
     }
-    toggleRestartBtn()
 }
 // Render the board as a <table> to the page
 function renderBoard(board) {
@@ -74,10 +86,11 @@ function renderBoard(board) {
 
             var cellClass = getClassName({ i: i, j: j })
             cellClass += (currCell.type === SKY) ? ' sky' : ' edge';
+            cellClass += (gHero.isShield && (currCell.gameObject === HERO || currCell.gameObject === HERO_SUPER)) ? ' shield' : '';
             strHTML += `\t<td class="cell ${cellClass}">\n`;
             switch (currCell.gameObject) {
                 case HERO:
-                    strHTML += HERO;
+                    strHTML += gHero.isSuperMode ? HERO_SUPER : HERO;
                     break;
                 case ALIEN:
                     strHTML += ALIEN;
@@ -124,6 +137,24 @@ function renderSuper() {
     document.querySelector('.super').innerText = gGame.super
 }
 
+function renderLives() {
+    var elLives = document.querySelector('.lives');
+    var strHTML = '';
+    for (var i = 0; i < gGame.lives; i++) {
+        strHTML += LIVE;
+    }
+    elLives.innerText = strHTML;
+}
+
+function renderShields() {
+    var elShields = document.querySelector('.shields');
+    var strHTML = '';
+    for (var i = 0; i < gGame.shields; i++) {
+        strHTML += SHIELD;
+    }
+    elShields.innerText = strHTML;
+}
+
 function renderInstructions() {
     var elInstruction = document.querySelector('.instructions')
     elInstruction.innerText = `Press 'Enter' to Start/Restart Game.
@@ -134,8 +165,6 @@ function renderInstructions() {
         Press 'x' to achive Super Mode for shooting more than one Laser each time.`
 }
 function toggleRestartBtn() {
-    var btn = document.querySelector('.btn-restart').style
-    btn.display = (btn.display === 'none') ? 'block' : 'none';
 }
 // Returns the class name for a specific cell
 function getClassName(location) {
