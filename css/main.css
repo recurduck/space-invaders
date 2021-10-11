@@ -1,10 +1,23 @@
+@font-face {
+    font-family: VT323;
+    src: url(../font/VT323-Regular.ttf);
+}
 body {
     background-color: rgb(26, 26, 26);
     color:whitesmoke;
     margin: 0 auto;
-    padding: 5px 10px
+    padding: 5px 10px;
+    font-family: 'VT323';
+    font-weight: 100;
+    font-size: 20px;
+}
+h1 {
+    text-align: center;
+    color: yellow;
+    font-size: 50px;
 }
 table {
+    margin: 0 auto;
     border:1px solid black;
     border-collapse: collapse;
 }
